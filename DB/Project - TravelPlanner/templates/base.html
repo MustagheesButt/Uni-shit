@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="initial-scale=1, width=device-width" name="viewport"/>
+
+    <title>{% block title %}{% endblock %}</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" type="text/css" />
+</head>
+<body>
+    <nav class="bg-dark">
+        <ul class="left">
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="{{ url_for('contact_us') }}">Contact Us</a></li>
+            <li><a href="{{ url_for('about_us') }}">About</a></li>
+        </ul>
+
+        <ul class="right">
+            {% if not session.user_id %}
+            <li><a href="{{ url_for('login') }}">Login</a></li>
+            <li><a href="{{ url_for('signup') }}">Sign-up</a></li>
+            {% else %}
+            <li><a href="{{ url_for('account') }}">Account</a></li>
+            <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+            <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            {% endif %}
+        </ul>
+
+        <div class="clear"></div>
+    </nav>
+
+    {% block content %}{% endblock %}
+
+    <footer class="bg-dark">
+        <script src="{{ url_for('static', filename='js/jquery-2.2.4.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+        {% block footer %}{% endblock %}
+
+        &copy; Copyright, 2018. All rights reserved.
+    </footer>
+</body>
+</html>

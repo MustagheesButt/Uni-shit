@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html data-th-replace="~{layouts/layout :: layout(~{::title}, ~{::body})}">
+    <head>
+        <title>Reviewer Login</title>
+    </head>
+
+    <body>
+        <div>
+            <h2>Reviewer Login</h2>
+
+            <form data-th-action="@{/reviewer-login}" data-th-object="${reviewer}" method="POST">
+                <label>Email Address</label>
+                <input type="email" name="email" data-th-field="*{email}" />
+
+                <label>Password</label>
+                <input type="password" name="password" data-th-field="*{password}" />
+
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    </body>
+</html>

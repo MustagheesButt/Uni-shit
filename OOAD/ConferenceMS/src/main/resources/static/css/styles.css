@@ -1,0 +1,23 @@
+nav > ul > li {
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.home-section {
+    float: left;
+    width: 50%;
+}
+
+form > label {
+    display: block;
+}
+
+table {
+    text-align: center;
+    width: 100%;
+}
+
+table, td, th {
+    border: 1px solid black;
+    border-collapse: collapse;
+}

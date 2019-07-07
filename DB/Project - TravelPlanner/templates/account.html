@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Account | TravelPlanner{% endblock %}
+
+{% block content %}
+<div class="container text-center">
+   <table>
+       <thead>
+            <tr>
+               <th>Booking ID</th>
+               <th>Booking Date</th>
+               <th>Package</th>
+               <th>Total People</th>
+               <th>Total Charges</th>
+            </tr>
+       </thead>
+      <tbody>
+             {% for booking in bookings %}
+                <tr>
+                    <td>{{ booking.booking_id }}</td>
+                    <td>{{ booking.booking_date }}</td>
+                    <td>{{ packages[booking.package_id - 1].package_name }}</td>
+                    <td>{{ booking.booking_total_people }}</td>
+                    <td>{{ booking.booking_total_charges }}</td>
+                </tr>
+            {% endfor %}
+      </tbody>
+   </table>
+
+</div>
+{% endblock %}

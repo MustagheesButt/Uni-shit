@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Home | TravelPlanner{% endblock %}
+
+{% block content %}
+
+<div class="slideshow">
+    <div class="background" id="bg1" style="z-index: -1;"></div>
+    <div class="background" id="bg2" style="opacity: 0; z-index: -2;"></div>
+
+    <div class="text-container">
+        <div class="text">
+            <h1>Travel Planner</h1>
+            <h2>Plan Your Journey With Us</h2>
+        </div>
+    </div>
+</div>
+
+<script>
+var images = new Array('{{ url_for('static', filename='images/slideshow/karachi.jpg') }}',
+   '{{ url_for('static', filename='images/slideshow/lahore.jpg') }}',
+   '{{ url_for('static', filename='images/slideshow/islamabad.jpg') }}',
+    '{{ url_for('static', filename='images/slideshow/murree.jpg') }}',
+    '{{ url_for('static', filename='images/slideshow/karakoram.jpg') }}'
+   );
+var imgCounter = 0;
+
+window.onload = function () {
+    $('.slideshow > #bg1, .slideshow > #bg2').css('background-image', 'url(' + images[imgCounter] + ')');
+    imgCounter += 1;
+    setInterval(doSlideshow, 5000);
+};
+
+function doSlideshow()
+{
+   $('.slideshow > #bg1').animate({opacity: 0}, 500, function () {
+      $('.slideshow > #bg1').css('background-image', 'url(' + images[imgCounter] + ')');
+      $('.slideshow > #bg1').animate({opacity: 1}, 500, function () {
+         $('.slideshow > #bg2').css('background-image', 'url(' + images[imgCounter] + ')');
+      });
+   });
+   imgCounter = (imgCounter + 1) % images.length;
+}
+function slideshowFadeIn()
+{
+    $('.slideshow').prepend($('<img class="slideshowimage" src="'+images[nextimage++]+'" style="display:none">').fadeIn(500, function(){setTimeout(doSlideshow, 6000);}));
+    if(nextimage>=images.length)
+        nextimage=0;
+}
+</script>
+{% endblock %}

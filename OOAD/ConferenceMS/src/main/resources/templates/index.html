@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html data-th-replace="~{layouts/layout :: layout(~{::title}, ~{::body})}">
+    <head>
+        <title>Home page</title>
+    </head>
+
+    <body>
+        <h1 style="text-align: center;">Conference Management System</h1>
+        <div class="home-section">
+            <h2>Register Now</h2>
+
+            <form data-th-action="@{/register}" data-th-object="${candidate}" method="POST">
+                <label>First Name</label>
+                <input type="text" placeholder="First Name" name="fname" data-th-field="*{firstName}" />
+
+                <label>Last Name</label>
+                <input type="text" placeholder="Last Name" name="lname" data-th-field="*{lastName}" />
+
+                <label>Email Address</label>
+                <input type="email" name="email" data-th-field="*{email}" />
+
+                <label>Password</label>
+                <input type="password" name="password" data-th-field="*{password}" />
+
+                <label>Phone Number</label>
+                <input type="tel" name="phone" data-th-field="*{phone}" />
+
+                <button type="submit">Register</button>
+            </form>
+
+            <p>After registering you will be prompted to submit your paper. You can submit later by logging in using this account</p>
+        </div>
+
+        <div class="home-section">
+            <h2>Login</h2>
+
+            <form data-th-action="@{/login}" data-th-object="${candidate}" method="POST">
+                <label>Email Address</label>
+                <input type="email" name="email" data-th-field="*{email}" />
+
+                <label>Password</label>
+                <input type="password" name="password" data-th-field="*{password}" />
+
+                <button type="submit">Login</button>
+            </form>
+
+            <p>You can login using your email and password to check the status of your paper.</p>
+        </div>
+    </body>
+</html>

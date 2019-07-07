@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Login | TravelPlanner{% endblock %}
+
+{% block content %}
+<div class="sform-container" style="background-size: cover; background-image: url({{ url_for('static', filename='images/bg-login.jpg') }});">
+    <form action="{{ url_for('login') }}" method="POST">
+        <div  align="center">
+            <h1 style="color: white">Login</h1>
+            <p style="color: white">Please enter your e-mail and password to login.</p><br>
+
+            <p><label for="email" style="color: white">Email</label>
+            <input type="text" placeholder="abc@email.com" name="email" required></p>
+
+            <p><label for="psw" style="color: white">Password</label>
+            <input type="password" placeholder="Password" name="password" required title="8 characters minimum"></p>
+
+            <p><label style="color: white">
+            <input type="checkbox" checked="checked" name="remember"> Remember me
+            </label></p><br>
+
+            <button class="ghost-btn" type="submit" name="signupbtn">Login</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

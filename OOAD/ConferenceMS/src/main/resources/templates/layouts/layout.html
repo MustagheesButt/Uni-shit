@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+
+<html data-th-fragment="layout(title, content)">
+    <head>
+        <title data-th-replace="${title}">Default Title</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link rel="stylesheet" type="text/css"
+              href="css/styles.css" data-th-href="@{css/styles.css}" />
+    </head>
+
+    <body>
+        <header>
+            <nav>
+                <ul>
+                    <li><a href="#" data-th-href="@{/}">Home</a></li>
+                    <li><a href="#" data-th-href="@{/reviewer-login}">Reviewer Login</a></li>
+
+                    <li data-th-if="${session.userId} != null and not ${session.containsKey('reviewer')}">
+                        <a href="#" data-th-href="@{/status}">Status</a>
+                    </li>
+                    <li data-th-if="${session.userId} != null and ${session.reviewer}">
+                        <a href="#" data-th-href="@{/reviewer-dashboard}">Reviewer Dashboard</a>
+                    </li>
+                    <li data-th-if="${session.userId != null}">
+                        <a href="#" data-th-href="@{/logout}">Logout</a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+
+        <main data-th-replace="${content}">Default layout content.</main>
+
+        <footer></footer>
+    </body>
+
+</html>

@@ -1,0 +1,48 @@
+CREATE TABLE Users (
+    user_id            INT PRIMARY KEY,
+    user_first_name    VARCHAR(15) NOT NULL,
+    user_last_name     VARCHAR(15) NOT NULL,
+    user_email         VARCHAR(60) NOT NULL,
+    user_phone         VARCHAR(15),
+    user_password      VARCHAR(512) NOT NULL,
+    user_registered_on DATE NOT NULL
+);
+
+CREATE TABLE Places (
+    place_id    INT PRIMARY KEY,
+    place_name  VARCHAR(512) NOT NULL,
+    longitude   NUMBER(9, 6),
+    latitude    NUMBER(9, 6)
+);
+
+CREATE TABLE Neighbours (
+    place_id           INT REFERENCES Places(place_id),
+    neighbour_id       INT REFERENCES Places(place_id),
+    neighbour_distance NUMBER(6, 2) NOT NULL,
+    neighbour_cost     INT NOT NULL,
+    neighbour_time     INT NOT NULL,
+    CONSTRAINT PK_Neighbours PRIMARY KEY (place_id, neighbour_id)
+);
+
+CREATE TABLE Packages (
+    package_id     INT PRIMARY KEY,
+    package_name   VARCHAR(50) NOT NULL,
+    package_factor NUMBER(4,2) NOT NULL
+);
+
+CREATE TABLE Bookings (
+    booking_id             INT PRIMARY KEY,
+    user_id                INT REFERENCES Users(user_id),
+    package_id             INT REFERENCES Packages(package_id),
+    booking_date           DATE NOT NULL,
+    booking_total_people   INT NOT NULL,
+    booking_total_charges  INT NOT NULL,
+    booking_total_duration INT NOT NULL
+);
+
+CREATE TABLE Booking_destinations (
+    booking_id       INT REFERENCES Bookings(booking_id),
+    place_id         INT REFERENCES Places(place_id),
+    bd_stay_duration INT NOT NULL,
+    CONSTRAINT PK_Booking_destinations PRIMARY KEY (booking_id, place_id)
+);

@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Sign-up | TravelPlanner{% endblock %}
+
+{% block content %}
+<div class="sform-container" style="background-image: url({{ url_for('static', filename='images/bg-signup.jpg') }});">
+    <form action="{{ url_for('signup') }}" method="POST">
+        <div  align="center">
+        <h1 style="color: white">Sign Up</h1>
+        <p style="color: white">Please fill in this form to create an account.</p><br>
+
+        <p ><label for="firstname" style="color: white">First name</label>
+        <input type="text" placeholder="Enter first name" name="firstname" required></p>
+
+        <p><label for="lastname" style="color: white">Last name</label>
+        <input type="text" placeholder="Enter last name" name="lastname" required></p>
+
+        <p><label for="email" style="color: white">Email</label>
+        <input type="text" placeholder="abc@email.com" name="email" required></p>
+
+        <p><label for="phone" style="color: white">Phone#</label>
+        <input type="tel" placeholder="0333-9999999" name="phone" required></p>
+
+        <p><label for="psw" style="color: white">Password</label>
+        <input type="password" placeholder="Enter Password" name="password" required></p>
+
+        <p><label style="color: white">Confirm Password</label>
+        <input type="password" placeholder="Retype Password" name="confirm-password" required /></p><br>
+
+        <p style="color: white">By creating an account you agree to our <a href="#" style="color:dodgerblue">Terms & Privacy</a>.</p>
+        </div>
+
+        <div style="text-align: center">
+            <button type="submit" name="signupbtn">Sign Up</button>
+            <p>
+        <div style=" color: white">Already a member?
+            <a href="{{ url_for('login') }}"> Login </a></p></div>
+        </div>
+    </form>
+</div>
+{% endblock %}

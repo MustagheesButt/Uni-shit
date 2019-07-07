@@ -1,0 +1,2 @@
+## ConferenceMS
+A very basic Conference Management System web application. Java and Spring Boot framework were used for development. It was later supposed to be refactored and use some design patterns.

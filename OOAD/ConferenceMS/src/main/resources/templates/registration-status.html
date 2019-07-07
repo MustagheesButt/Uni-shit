@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html data-th-replace="~{layouts/layout :: layout(~{::title}, ~{::body})}">
+    <head>
+        <title>Registration successful</title>
+    </head>
+
+    <body>
+        <h1>You have registered successfully.</h1>
+        <p data-th-text="'Welcome ' + ${candidate.firstName} + ' ' + ${candidate.lastName} + '!'">Welcome John Doe!</p>
+        <p>Please proceed to <a href="/status">submit your paper</a>.</p>
+    </body>
+</html>

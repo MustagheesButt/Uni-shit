@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Multilayer Perceptron</title>
+        
+        <script src="p5.min.js"></script>
+        <script src="tf.min.js"></script>
+        <script src="mnist.js"></script>
+        <script src="matrix.js"></script>
+        <script src="NeuralNetwork.js"></script>
+        <script src="main.js"></script>
+
+        <style>
+            #info {
+                font-size: 24pt;
+            }
+            .correct {
+                color: forestgreen;
+            }
+            .wrong {
+                color: firebrick;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="container"></div>
+        <div id="info">
+            <div class="to-color">
+                Label: <span id="label"></span>
+                Guess: <span id="guess"></span>
+            </div>
+            Completed: <span id="perc"></span>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html data-th-replace="~{layouts/layout :: layout(~{::title}, ~{::body})}">
+    <head>
+        <title>Status</title>
+    </head>
+
+    <body>
+        <section data-th-if="${statusMessage == 'not submitted'}">
+            <h1>Submit your paper.</h1>
+            <form data-th-action="@{/submit-paper}" data-th-object="${paper}" method="POST" enctype="multipart/form-data">
+                <label>Paper Title</label>
+                <input type="text" name="title" data-th-field="*{title}" />
+
+                <label>File (txt, pdf, docx)</label>
+                <input type="file" name="file" data-th-field="*{file}" />
+                
+                <button type="submit">Submit</button>
+            </form>
+            <p>After submission, a reviewer will review your paper. After review is done, you will notified through email. You can also visit this page to check the status of your paper.</p>
+        </section>
+
+        <section data-th-if="${statusMessage == 'pending'}">
+            <h1>Pending</h1>
+            <p>Your paper is currently pending review. A reviewer will be assigned to it, and you will be notified when your paper has been reviewed. Meanwhile, you can keep visiting this page to check the status of your paper.</p>
+        </section>
+
+        <section data-th-if="${statusMessage == 'rejected'}">
+            <h1>Rejected</h1>
+            <p>Your paper has been rejected.</p>
+        </section>
+
+        <section data-th-if="${statusMessage == 'accepted'}">
+            <h1>Accepted</h1>
+            <p>Your paper has been accepted. You can now submit a camera-ready version of your paper.</p>
+            <form data-th-action="@{/update-paper}" data-th-object="${paper}" method="POST" enctype="multipart/form-data">
+                <label>File (txt, pdf, docx)</label>
+                <input type="file" name="file" data-th-field="*{file}" />
+                
+                <button type="submit">Submit</button>
+            </form>
+        </section>
+        
+    </body>
+</html>

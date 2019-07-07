@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html data-th-replace="~{layouts/layout :: layout(~{::title}, ~{::body})}">
+    <head>
+        <title>Reviewer Dashboard</title>
+    </head>
+
+    <body>
+        <div>
+            <h2>Reviewer Dashboard</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <td>#</td>
+                        <td>Paper Title</td>
+                        <td>File</td>
+                        <td>Submitted By</td>
+                        <td>Status</td>
+                        <td>Action</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-th-each="paper, iter : ${papers}">
+                        <td data-th-text="${iter.count}"></td>
+                        <td data-th-text="${paper.title}"></td>
+                        <td><a href="#" data-th-href="|/download/${paper.id}|" data-th-text="${paper.fileName}"></a></td>
+                        <td data-th-text="${candidates[paper.submittedBy - 1].firstName} + ' ' + ${candidates[paper.submittedBy - 1].lastName}"></td>
+                        <td data-th-text="${paper.status == 0}? 'Pending' : (${paper.status == -1} ? 'Rejected' : 'Accepted')"></td>
+                        <td>
+                            <div><a data-th-href="|/set-status/accept/${paper.id}|">Accept</a></div>
+                            <div><a data-th-href="|/set-status/reject/${paper.id}|">Reject</a></div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>
