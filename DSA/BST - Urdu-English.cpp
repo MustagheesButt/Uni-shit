@@ -178,7 +178,7 @@ int main(void)
 {
 	BST bst_index;
 
-	ifstream in_file("input.txt");
+	ifstream in_file("input_urdu-eng-vocab.txt");
 
 	if (!in_file.is_open())
 	{
@@ -190,7 +190,6 @@ int main(void)
 	{
 		bst_index.read_unit(in_file);
 		bst_index.print();
-		system("PAUSE");
 	}
 
 	in_file.close();

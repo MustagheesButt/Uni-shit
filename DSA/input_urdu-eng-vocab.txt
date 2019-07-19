@@ -1,0 +1,12 @@
+$Unit 1
+janwar : animal
+mera : my
+aor : and
+aur : and
+subha : dawn
+
+$Unit 2
+piyar : love
+muhabbat : love
+saal : year
+nafrat : hate
