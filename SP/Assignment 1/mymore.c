@@ -4,14 +4,16 @@
 #include <sys/termios.h>
 #include <sys/ioctl.h>
 #include <errno.h>
+#include <unistd.h>
+#include <sys/wait.h>
 
 #define MAX_LINE_LEN 512
 
 /* Implements core functionality of more util */
-void mymore(FILE* fileptr);
+void mymore(FILE *fileptr, char* file_name);
 
 /* Implements pattern search functionality */
-int search(FILE* fileptr, char* search_str);
+int search(FILE *fileptr, char *search_str);
 
 /* Helper function to get number of lines the shell can print */
 int get_lines();
@@ -20,26 +22,26 @@ int get_lines();
 int get_cols();
 
 /* Helper function to get size of a file */
-int get_filesize(FILE* fileptr);
+int get_filesize(FILE *fileptr);
 
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
     if (argc == 1)
     {
-        mymore(stdin);
+        mymore(stdin, "stdin");
     }
     else if (strcmp(argv[1], "--help") == 0)
     {
         printf("Usage:\n\t ./mymore <file 1> <file 2> ... <file N>\n");
         return 0;
     }
-    
-    FILE* infile;
+
+    FILE *infile;
 
     for (int i = 1; i < argc; i++)
     {
         infile = fopen(argv[i], "r");
-    
+
         if (infile == NULL)
         {
             printf("\n%.*s\n", 27 + (int)strlen(argv[i]), "=============================================");
@@ -47,17 +49,17 @@ int main(int argc, char** argv)
             printf("%.*s\n", 27 + (int)strlen(argv[i]), "=============================================");
             continue;
         }
-        
+
         // display the file contents
-        mymore(infile);
-        
+        mymore(infile, argv[i]);
+
         fclose(infile);
     }
-    
+
     return 0;
 }
 
-void mymore(FILE* fileptr)
+void mymore(FILE *fileptr, char* file_name)
 {
     char line[MAX_LINE_LEN];
     int lines_printed = 0;
@@ -66,17 +68,17 @@ void mymore(FILE* fileptr)
     int data_printed = 0;
     int printed_something = 0;
 
-    FILE* fp_tty = fopen("/dev/tty", "r");
-    
+    FILE *fp_tty = fopen("/dev/tty", "r");
+
     // non-canonical + non-echo mode
     struct termios original_settings;
     struct termios new_settings;
     int result = tcgetattr(fileno(fp_tty), &original_settings);
     new_settings = original_settings;
-    
+
     new_settings.c_lflag &= ~ICANON;
     new_settings.c_lflag &= ~ECHO;
-    
+
     if (tcsetattr(fileno(fp_tty), TCSANOW, &new_settings) != 0)
     {
         perror("Could not change terminal props");
@@ -92,20 +94,20 @@ void mymore(FILE* fileptr)
             lines_printed += 1;
             printed_something = 1;
         }
-        
+
         if (feof(fileptr))
         {
             printf("\n");
             break;
         }
-        
+
         // print status
         if (printed_something)
-            printf("\033[7m --more--(%d %%) \033[m", (int)((float)data_printed/total_data * 100));
-        
+            printf("\033[7m --more--(%d %%) \033[m", (int)((float)data_printed / total_data * 100));
+
         // user input
         char choice = getc(fp_tty);
-        
+
         // move cursor left no. of cols times, to erase printed status
         printf("\033[%dD\033[K", get_cols());
 
@@ -148,6 +150,24 @@ void mymore(FILE* fileptr)
                 lines_printed = 1;
             }
         }
+        else if (choice == 'v')
+        {
+            pid_t gg = vfork();
+
+            if (gg == -1)
+            {
+                printf("Some error occured\n");
+            }
+            if (gg == 0)
+            {
+                execlp("vi", "vi", file_name, NULL);
+                exit(0);
+            }
+            else
+            {
+                wait(NULL);
+            }
+        }
         else
         {
             printf("Unrecognized input!\n");
@@ -167,7 +187,7 @@ int get_lines()
 {
     struct winsize w;
     ioctl(1, TIOCGWINSZ, &w);
-    
+
     return w.ws_row;
 }
 
@@ -175,21 +195,21 @@ int get_cols()
 {
     struct winsize w;
     ioctl(1, TIOCGWINSZ, &w);
-    
+
     return w.ws_col;
 }
 
-int get_filesize(FILE* fileptr)
+int get_filesize(FILE *fileptr)
 {
     int size = 0;
     fseek(fileptr, 0, SEEK_END);
     size = ftell(fileptr);
     fseek(fileptr, 0, SEEK_SET);
-    
+
     return size;
 }
 
-int search(FILE* fileptr, char* search_str)
+int search(FILE *fileptr, char *search_str)
 {
     char buffer[MAX_LINE_LEN];
     long long initial_pos;
@@ -197,7 +217,7 @@ int search(FILE* fileptr, char* search_str)
     int count = 0;
     int match = 0;
 
-    char* charp;
+    char *charp;
     initial_pos = ftell(fileptr);
 
     while (!feof(fileptr))
@@ -217,15 +237,13 @@ int search(FILE* fileptr, char* search_str)
                         if (++count == 4)
                             break;
                     }
-
                 }
-                else 
-                    perror("fseek() failed"); 
+                else
+                    perror("fseek() failed");
             }
 
             break;
         }
-
     }
 
     if (!match)
