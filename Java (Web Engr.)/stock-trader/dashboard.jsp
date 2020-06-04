@@ -23,7 +23,7 @@
                 $.get("https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=" + symbol + "&apikey=" + API_KEY + "&datatype=json", function (data) {
                     const ofConcern = data["bestMatches"][0]
 
-                    if (ofConcern["1. symbol"].toLowerCase() == symbol) {
+                    if (ofConcern["1. symbol"].toLowerCase() == symbol.toLowerCase()) {
                         $("#results").removeClass("d-none")
                         console.log(ofConcern)
                         $("#symbol-value").html(ofConcern["1. symbol"])

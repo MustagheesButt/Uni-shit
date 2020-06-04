@@ -5,37 +5,40 @@ import java.sql.*;
 
 public class Register extends HttpServlet {
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        RequestDispatcher view = req.getRequestDispatcher("register.html");
+        RequestDispatcher view = req.getRequestDispatcher("register.jsp");
         view.forward(req, res);
     }
 
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        String firstName = req.getParameter("firstName");
-        String lastName  = req.getParameter("lastName");
-        String email     = req.getParameter("email");
-        String password  = req.getParameter("password");
+        String name     = req.getParameter("name");
+        String email    = req.getParameter("email");
+        String password = req.getParameter("password");
 
         PrintWriter out = res.getWriter();
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/uni_labs", "root", "");
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/stock_trader", "root", "");
             Statement statement = conn.createStatement();
 
-            int rv = statement.executeUpdate("INSERT INTO users (email, first_name, last_name, password) VALUES ('" +
+            int affectedRows = statement.executeUpdate("INSERT INTO users (email, name, password) VALUES ('" +
                                              email +
-                                             "', '" + firstName +
-                                             "', '" + lastName +
+                                             "', '" + name +
                                              "', '" + password +
-                                             "')");
+                                             "')", Statement.RETURN_GENERATED_KEYS);
             
-            if (rv == 1) {
-                // TODO: perform a redirect to dashboard
-                out.println("Insertion successful.");
-            } else {
-                // TODO: perform a redirect to registration page with a url-param maybe
-                out.println("Insertion failed.");
+            if (affectedRows == 1) {
+                ResultSet rs = statement.getGeneratedKeys();
+                rs.next();
+                HttpSession sess = req.getSession();
+                sess.setAttribute("user_id", rs.getInt(1));
+                sess.setAttribute("user_name", name);
+                rs.close();
+                
+                res.sendRedirect("dashboard");
             }
+            else
+                res.sendRedirect("register?email");
         } catch(Exception e) {
             out.println(e);
         }
